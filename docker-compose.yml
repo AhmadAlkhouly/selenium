@@ -7,8 +7,9 @@ services:
     container_name: java-app
     healthcheck:
       #test: ["CMD", "lsof", "-i:8080"]
-      test: grep -i "Server startup" /usr/local/tomcat/logs/catalina.`date +"%Y-%m-%d"`.log || exit 1
+      #test: grep -i "Server startup" /usr/local/tomcat/logs/catalina.`date +"%Y-%m-%d"`.log || exit 1
       #test: ["CMD-SHELL", "grep -i", "Server startup", "/usr/local/tomcat/logs/catalina.`date +"%Y-%m-%d"`"]
+      test: ["CMD-SHELL", "grep -i 'Server startup' /usr/local/tomcat/logs/catalina.*.log || exit 1"]
       interval: 5s
       timeout: 2s
       retries: 3
@@ -46,7 +47,7 @@ services:
       - "5900:5900"
 
   selenium-test:
-    image: mzain/node-zein  
+    build: ./node  
     restart: always
     container_name: selenium-test
     volumes:
